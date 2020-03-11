@@ -8,16 +8,10 @@ import pandas as pan
 
 def upload_blob(bucket_name, source_file_name, destination_blob_name):
         """Uploads a file to the bucket."""
-        # bucket_name = "your-bucket-name"
-        # source_file_name = "local/path/to/file"
-        # destination_blob_name = "storage-object-name"
-
         storage_client = storage.Client()
         bucket = storage_client.bucket(bucket_name)
         blob = bucket.blob(destination_blob_name)
-
         blob.upload_from_filename(source_file_name)
-
         print(
             "File {} uploaded to {}.".format(
                 source_file_name, destination_blob_name
@@ -77,9 +71,8 @@ sensor.select_gas_heater_profile(0)
 print('\n\nPolling:')
 df_airquality = pan.DataFrame()
 try:
-    while True:
-        if sensor.get_sensor_data():
-			# Dataframe creation to collect data
+	while True:
+		if sensor.get_sensor_data():
 			df_airquality["Temperature"].append(sensor.data.temperature)
 			df_airquality["Pressure"].append(sensor.data.pressure)
 			df_airquality["Humidity"].append(sensor.data.humidity)
