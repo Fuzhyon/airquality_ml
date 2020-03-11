@@ -2,6 +2,28 @@
 
 import bme680
 import time
+from google.cloud import storage
+import pandas as pan
+
+
+def upload_blob(bucket_name, source_file_name, destination_blob_name):
+        """Uploads a file to the bucket."""
+        # bucket_name = "your-bucket-name"
+        # source_file_name = "local/path/to/file"
+        # destination_blob_name = "storage-object-name"
+
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(destination_blob_name)
+
+        blob.upload_from_filename(source_file_name)
+
+        print(
+            "File {} uploaded to {}.".format(
+                source_file_name, destination_blob_name
+            )
+        )
+
 
 print("""read-all.py - Displays temperature, pressure, humidity, and gas.
 
@@ -53,9 +75,16 @@ sensor.select_gas_heater_profile(0)
 # sensor.select_gas_heater_profile(1)
 
 print('\n\nPolling:')
+df_airquality = pan.DataFrame()
 try:
     while True:
         if sensor.get_sensor_data():
+			# Dataframe creation to collect data
+			df_airquality["Temperature"].append(sensor.data.temperature)
+			df_airquality["Pressure"].append(sensor.data.pressure)
+			df_airquality["Humidity"].append(sensor.data.humidity)
+			df_airquality["Time"].append(sensor.data.time)
+
             output = '{0:.2f} C,{1:.2f} hPa,{2:.2f} %RH'.format(
                 sensor.data.temperature,
                 sensor.data.pressure,
@@ -65,10 +94,10 @@ try:
                 print('{0},{1} Ohms'.format(
                     output,
                     sensor.data.gas_resistance))
-
+				df_airquality["Airquality"] = sensor.data.gas_resistance
             else:
                 print(output)
-
+				print(df_airquality)
         time.sleep(1)
 
 except KeyboardInterrupt:
