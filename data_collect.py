@@ -3,7 +3,12 @@
 
 import bme680
 import time
+import subprocess import PIPE, Popen
 
+try:
+	from smbus2 import SMBus
+except: ImportError:
+	from smbus import SMBus
 print("""data_collect.py - Affiche la température, pression, le pourcentage d'humidité dans l'air, et la qualité de l'air.
 Appuyez sur Ctrl+C pour quitter.
 """)
@@ -12,6 +17,17 @@ try:
 	sensor = bme680.BME680(bme680.I2C_ADDR_PRIMARY)
 except IOError:
 	sensor = bme680.BME680(bme680.I2C_ADDR_SECONDARY)
+
+#Gets the CPU temperature in degrees C
+def get_cpu_temperature():
+    process = Popen(['vcgencmd', 'measure_temp'], stdout=PIPE)
+    output, _error = process.communicate()
+    return float(output[output.index('=') + 1:output.rindex("'")])
+
+factor = 1.0  # Smaller numbers adjust temp down, vice versa
+smooth_size = 10  # Dampens jitter due to rapid CPU temp changes
+
+cpu_temps = []
 
 print("Calibrage des données: ")
 for name in dir(sensor.calibration_data):
@@ -43,7 +59,18 @@ print('\n\nRécupération:')
 try:
 	while True:
 		if sensor.get_sensor_data():
-			output = '{0:.2f}°C,{1:.2f} hPa,{2:.2f} %RH (Relative Humidity)'.format(sensor.data.temperature,sensor.data.pressure, sensor.data.humidity)
+
+			cpu_temp = get_cpu_temperature()
+			cpu_temps.append(cpu_temp)
+
+			if len(cpu_temps) > smooth_size:
+				cpu_temps = cpu_temps[1:]
+
+			smoothed_cpu_temp = sum(cpu_temps) / float(len(cpu_temps))
+			raw_temp = sensor.data.temperature
+			comp_temp = raw_temp - ((smoothed_cpu_temp - raw_temp) / factor)
+
+			output = '{:05.2f}°C,{1:.2f} hPa,{2:.2f} %RH (Relative Humidity)'.format(comp_temp,sensor.data.pressure, sensor.data.humidity)
 			
 			if sensor.data.heat_stable:
 				print('{0},{1} Ohms'.format(output,sensor.data.gas_resistance))
