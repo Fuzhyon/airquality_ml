@@ -2,21 +2,7 @@
 
 import bme680
 import time
-from google.cloud import storage
 import pandas as pan
-
-
-def upload_blob(bucket_name, source_file_name, destination_blob_name):
-        """Uploads a file to the bucket."""
-        storage_client = storage.Client()
-        bucket = storage_client.bucket(bucket_name)
-        blob = bucket.blob(destination_blob_name)
-        blob.upload_from_filename(source_file_name)
-        print(
-            "File {} uploaded to {}.".format(
-                source_file_name, destination_blob_name
-            )
-        )
 
 
 print("""read-all.py - Displays temperature, pressure, humidity, and gas.
@@ -68,7 +54,7 @@ sensor.select_gas_heater_profile(0)
 # sensor.set_gas_heater_profile(200, 150, nb_profile=1)
 # sensor.select_gas_heater_profile(1)
 
-print('\n\nPolling:')
+print('\n\Récupération:')
 df_airquality = pan.DataFrame()
 try:
 	while True:
