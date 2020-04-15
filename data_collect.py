@@ -65,7 +65,7 @@ try:
 			df_airquality["Temperature"].append(pan.Series(sensor.data.temperature))
 			df_airquality["Pressure"].append(pan.Series(sensor.data.pressure))
 			df_airquality["Humidity"].append(pan.Series(sensor.data.humidity))
-			df_airquality["Time"].append(datetime.datetime.now())
+			df_airquality["Time"].append(pan.Series(datetime.datetime.now()))
 
 			output = '{0:.2f} C,{1:.2f} hPa,{2:.2f} %RH'.format(sensor.data.temperature,sensor.data.pressure,sensor.data.humidity)
 			if sensor.data.heat_stable:
