@@ -57,12 +57,13 @@ sensor.select_gas_heater_profile(0)
 # sensor.select_gas_heater_profile(1)
 
 print('\n\Récupération:')
-df_airquality = pan.DataFrame(columns=["Temperature", "Pressure", "Humidity", "Time", "Airquality"])
+df_airquality = pan.DataFrame(
+    columns=["Temperature", "Pressure", "Humidity", "Time", "Airquality"])
 print(datetime.datetime.now())
 try:
     while True:
         if sensor.get_sensor_data():
-			print(sensor.data.temperature)
+            print(sensor.data.temperature)
             df_airquality["Temperature"].append(sensor.data.temperature)
             df_airquality["Pressure"].append(sensor.data.pressure)
             df_airquality["Humidity"].append(sensor.data.humidity)
@@ -82,4 +83,4 @@ try:
             time.sleep(1)
 
 except KeyboardInterrupt:
-	print(df_airquality)
+    print(df_airquality)
