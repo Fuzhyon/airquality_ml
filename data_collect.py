@@ -57,27 +57,30 @@ sensor.select_gas_heater_profile(0)
 # sensor.select_gas_heater_profile(1)
 
 print('\n\Récupération:')
-df_airquality = pan.DataFrame(columns=["Temperature","Pressure","Humidity","Time","Airquality"])
+df_airquality = pan.DataFrame(columns=["Temperature", "Pressure", "Humidity", "Time", "Airquality"])
 print(datetime.datetime.now())
 try:
-	while True:
-		if sensor.get_sensor_data():
-			
-			df_airquality["Temperature"].append(pan.Series(sensor.data.temperature))
-			df_airquality["Pressure"].append(pan.Series(sensor.data.pressure))
-			df_airquality["Humidity"].append(pan.Series(sensor.data.humidity))
-			df_airquality["Time"].append(pan.Series(datetime.datetime.now()))
+    while True:
+        if sensor.get_sensor_data():
 
-			output = '{0:.2f} C,{1:.2f} hPa,{2:.2f} %RH'.format(sensor.data.temperature,sensor.data.pressure,sensor.data.humidity)
-			if sensor.data.heat_stable:
-				print('{0},{1} Ohms'.format(
+            df_airquality["Temperature"].append(
+                pan.Series(sensor.data.temperature))
+            df_airquality["Pressure"].append(pan.Series(sensor.data.pressure))
+            df_airquality["Humidity"].append(pan.Series(sensor.data.humidity))
+            df_airquality["Time"].append(pan.Series(datetime.datetime.now()))
+
+            output = '{0:.2f} C,{1:.2f} hPa,{2:.2f} %RH'.format(
+                sensor.data.temperature, sensor.data.pressure, sensor.data.humidity)
+            if sensor.data.heat_stable:
+                print('{0},{1} Ohms'.format(
                     output,
                     sensor.data.gas_resistance))
-				df_airquality["Airquality"].append(pan.Series(sensor.data.gas_resistance))
-			else:
-				print(output)
-				print(df_airquality)
-			time.sleep(1)
+                df_airquality["Airquality"].append(
+                    pan.Series(sensor.data.gas_resistance))
+            else:
+                print(output)
+                print(df_airquality)
+            time.sleep(1)
 
 except KeyboardInterrupt:
-    pass
+	print(df_airquality)
