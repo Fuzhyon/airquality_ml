@@ -63,8 +63,7 @@ try:
     while True:
         if sensor.get_sensor_data():
 
-            df_airquality["Temperature"].append(
-                pan.Series(sensor.data.temperature))
+            df_airquality["Temperature"].append(pan.Series(sensor.data.temperature))
             df_airquality["Pressure"].append(pan.Series(sensor.data.pressure))
             df_airquality["Humidity"].append(pan.Series(sensor.data.humidity))
             df_airquality["Time"].append(pan.Series(datetime.datetime.now()))
