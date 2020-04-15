@@ -60,6 +60,7 @@ df_airquality = pan.DataFrame(columns=["Temperature","Pressure","Humidity","Time
 try:
 	while True:
 		if sensor.get_sensor_data():
+			print(type(sensor.data.temperature))
 			df_airquality["Temperature"].append(sensor.data.temperature)
 			df_airquality["Pressure"].append(sensor.data.pressure)
 			df_airquality["Humidity"].append(sensor.data.humidity)
