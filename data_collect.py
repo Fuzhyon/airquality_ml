@@ -56,7 +56,7 @@ sensor.select_gas_heater_profile(0)
 # sensor.select_gas_heater_profile(1)
 
 print('\n\Récupération:')
-df_airquality = pan.DataFrame()
+df_airquality = pan.DataFrame({"Temperature","Pressure","Humidity","Time","Airquality"})
 try:
 	while True:
 		if sensor.get_sensor_data():
