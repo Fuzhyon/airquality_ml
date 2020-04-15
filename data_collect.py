@@ -5,7 +5,7 @@ import bme680
 import datetime
 import time
 import pandas as pan
-from pytz import timezone
+
 
 
 print("""read-all.py - Displays temperature, pressure, humidity, and gas.
@@ -64,7 +64,6 @@ sensor_pressure = []
 sensor_humidity = []
 sensor_airquality = []
 sensor_time = []
-paris = timezone('Europe/Paris')
 
 print(datetime.datetime.now())
 try:
@@ -74,7 +73,7 @@ try:
             sensor_temperature.append(sensor.data.temperature)
             sensor_pressure.append(sensor.data.pressure)
             sensor_humidity.append(sensor.data.humidity)
-            sensor_time.append(datetime.datetime.now(paris))
+            sensor_time.append(datetime.datetime.now())
 
             output = datetime.datetime.now().strftime('%Y-%m-%d,%H:%M:%S,')+'{0:.2f} C,{1:.2f} hPa,{2:.2f} %RH'.format(
                 sensor.data.temperature, sensor.data.pressure, sensor.data.humidity)
