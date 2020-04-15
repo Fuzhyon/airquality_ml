@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import bme680
-import time
+import datetime
 import pandas as pan
 
 
@@ -57,14 +57,15 @@ sensor.select_gas_heater_profile(0)
 
 print('\n\Récupération:')
 df_airquality = pan.DataFrame(columns=["Temperature","Pressure","Humidity","Time","Airquality"])
+print(datetime.datetime.now())
 try:
 	while True:
 		if sensor.get_sensor_data():
-			print(type(sensor.data.temperature))
+			
 			df_airquality["Temperature"].append(pan.Series(sensor.data.temperature))
 			df_airquality["Pressure"].append(pan.Series(sensor.data.pressure))
 			df_airquality["Humidity"].append(pan.Series(sensor.data.humidity))
-			df_airquality["Time"].append(pan.Series(sensor.data.time))
+			df_airquality["Time"].append(datetime.datetime.now())
 
 			output = '{0:.2f} C,{1:.2f} hPa,{2:.2f} %RH'.format(sensor.data.temperature,sensor.data.pressure,sensor.data.humidity)
 			if sensor.data.heat_stable:
