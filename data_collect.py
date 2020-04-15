@@ -60,17 +60,17 @@ df_airquality = pan.DataFrame(columns=["Temperature","Pressure","Humidity","Time
 try:
 	while True:
 		if sensor.get_sensor_data():
-			df_airquality["Temperature"].append(str(sensor.data.temperature))
-			df_airquality["Pressure"].append(str(sensor.data.pressure))
-			df_airquality["Humidity"].append(str(sensor.data.humidity))
-			df_airquality["Time"].append(str(sensor.data.time))
+			df_airquality["Temperature"].append(sensor.data.temperature)
+			df_airquality["Pressure"].append(sensor.data.pressure)
+			df_airquality["Humidity"].append(sensor.data.humidity)
+			df_airquality["Time"].append(sensor.data.time)
 
 			output = '{0:.2f} C,{1:.2f} hPa,{2:.2f} %RH'.format(sensor.data.temperature,sensor.data.pressure,sensor.data.humidity)
 			if sensor.data.heat_stable:
 				print('{0},{1} Ohms'.format(
                     output,
                     sensor.data.gas_resistance))
-				df_airquality["Airquality"].append(str(sensor.data.gas_resistance))
+				df_airquality["Airquality"].append(sensor.data.gas_resistance)
 			else:
 				print(output)
 				print(df_airquality)
