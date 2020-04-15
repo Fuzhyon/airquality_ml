@@ -57,30 +57,38 @@ sensor.select_gas_heater_profile(0)
 # sensor.select_gas_heater_profile(1)
 
 print('\n\Récupération:')
-df_airquality = pan.DataFrame(
-    columns=["Temperature", "Pressure", "Humidity", "Time", "Airquality"])
+df_airquality = pan.DataFrame(columns=["Temperature", "Pressure", "Humidity", "Time", "Airquality"])
+sensor_temperature = []
+sensor_pressure = []
+sensor_humidity = []
+sensor_airquality = []
+sensor_time = []
+
 print(datetime.datetime.now())
 try:
     while True:
         if sensor.get_sensor_data():
             print(sensor.data.temperature)
-            df_airquality["Temperature"].append(sensor.data.temperature)
-            df_airquality["Pressure"].append(sensor.data.pressure)
-            df_airquality["Humidity"].append(sensor.data.humidity)
-            df_airquality["Time"].append(datetime.datetime.now())
+            sensor_temperature.append(sensor.data.temperature)
+            sensor_pressure.append(sensor.data.pressure)
+            sensor_humidity.append(sensor.data.humidity)
+            sensor_airquality.append(datetime.datetime.now())
 
-            output = '{0:.2f} C,{1:.2f} hPa,{2:.2f} %RH'.format(
+            output = datetime.datetime.now().strftime('%Y-%m-%d,%H:%M:%S,')+'{0:.2f} C,{1:.2f} hPa,{2:.2f} %RH'.format(
                 sensor.data.temperature, sensor.data.pressure, sensor.data.humidity)
             if sensor.data.heat_stable:
                 print('{0},{1} Ohms'.format(
                     output,
                     sensor.data.gas_resistance))
-                df_airquality["Airquality"].append(
-                    pan.Series(sensor.data.gas_resistance))
+                sensor_time.append(sensor.data.gas_resistance)
             else:
                 print(output)
-                print(df_airquality)
             time.sleep(1)
 
 except KeyboardInterrupt:
-    print(df_airquality)
+	df_airquality["Temperature"] = pan.Series(sensor_temperature)
+	df_airquality["Pressure"] = pan.Series(sensor_pressure)
+	df_airquality["Humidity"] = pan.Series(sensor_humidity)
+	df_airquality["Airquality"] = pan.Series(sensor_airquality)
+	df_airquality["Time"] = pan.Series(sensor_time)
+	print(df_airquality)
