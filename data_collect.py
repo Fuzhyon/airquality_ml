@@ -79,7 +79,7 @@ try:
                 print('{0},{1} Ohms'.format(
                     output,
                     sensor.data.gas_resistance))
-                sensor_airquality.append(int(sensor.data.gas_resistance))
+                sensor_airquality.append(sensor.data.gas_resistance)
             else:
                 print(output)
             time.sleep(1)
@@ -89,5 +89,5 @@ except KeyboardInterrupt:
 	df_airquality["Pressure"] = pan.Series(sensor_pressure)
 	df_airquality["Humidity"] = pan.Series(sensor_humidity)
 	df_airquality["Airquality"] = pan.Series(sensor_airquality)
-	df_airquality["Time"] = pan.Series(sensor_time)
+	df_airquality["Time"] = pan.Series(int(sensor_time))
 	print(df_airquality)
