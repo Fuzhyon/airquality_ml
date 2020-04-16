@@ -65,11 +65,9 @@ sensor_humidity = []
 sensor_airquality = []
 sensor_time = []
 
-print(datetime.datetime.now())
 try:
     while True:
         if sensor.get_sensor_data():
-            print(sensor.data.temperature)
             sensor_temperature.append(sensor.data.temperature)
             sensor_pressure.append(sensor.data.pressure)
             sensor_humidity.append(sensor.data.humidity)
@@ -81,7 +79,7 @@ try:
                 print('{0},{1} Ohms'.format(
                     output,
                     sensor.data.gas_resistance))
-                sensor_airquality.append(sensor.data.gas_resistance)
+                sensor_airquality.append(int(sensor.data.gas_resistance))
             else:
                 print(output)
             time.sleep(1)
