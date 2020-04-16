@@ -91,3 +91,11 @@ except KeyboardInterrupt:
 	df_airquality["Airquality"] = pan.Series(sensor_airquality, dtype=object)
 	df_airquality["Time"] = pan.Series(sensor_time)
 	print(df_airquality)
+
+# from datetime import datetime
+
+# # current date and time
+# now = datetime.now()
+
+# timestamp = datetime.timestamp(now)
+# print("timestamp =", timestamp)
