@@ -5,6 +5,7 @@ import bme680
 import datetime
 import time
 import pandas as pan
+import databaseconfig as cfg
 from sqlalchemy import create_engine
 
 
@@ -102,5 +103,5 @@ except KeyboardInterrupt:
 # print("timestamp =", timestamp)
 
 
-engine = create_engine('postgresql://scott:tiger@localhost:5432/mydatabase')
+engine = sqlalchemy.create_engine('mysql://'+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+')
 print(engine)
