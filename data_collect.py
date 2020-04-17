@@ -87,6 +87,8 @@ try:
             else:
                 print(output)
             time.sleep(1)
+        
+            print(counter_fivemin_db_storing)
             counter_fivemin_db_storing += 1
 
             if counter_fivemin_db_storing >= 300 :
