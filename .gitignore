@@ -1,3 +1,7 @@
 #Ignore Folder
 google-cloud-sdk/
+bme/
+databaseconfig.pyc
+ls/
+mlenv/
 *config.py

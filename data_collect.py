@@ -6,7 +6,7 @@ import datetime
 import time
 import pandas as pan
 import databaseconfig as cfg
-from sqlalchemy import create_engine
+import sqlalchemy as db
 
 
 
@@ -103,5 +103,6 @@ except KeyboardInterrupt:
 # print("timestamp =", timestamp)
 
 
-engine = sqlalchemy.create_engine('mysql://'+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+')
-print(engine)
+engine = db.create_engine('mysql://'+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"])
+connection = engine.connect()
+print(connection)
