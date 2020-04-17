@@ -67,6 +67,8 @@ sensor_humidity = []
 sensor_airquality = []
 sensor_time = []
 
+counter_fivemin_db_storing = 0
+
 try:
     while True:
         if sensor.get_sensor_data():
@@ -85,13 +87,17 @@ try:
             else:
                 print(output)
             time.sleep(1)
+            counter_fivemin_db_storing += 1
 
+            if counter_fivemin_db_storing >= 300 :
+                counter_fivemin_db_storing = 0
+                df_airquality["Temperature"] = pan.Series(sensor_temperature)
+                df_airquality["Pressure"] = pan.Series(sensor_pressure)
+                df_airquality["Humidity"] = pan.Series(sensor_humidity)
+                df_airquality["Airquality"] = pan.Series(sensor_airquality, dtype=object)
+                df_airquality["Time"] = pan.Series(sensor_time)
+                
 except KeyboardInterrupt:
-	df_airquality["Temperature"] = pan.Series(sensor_temperature)
-	df_airquality["Pressure"] = pan.Series(sensor_pressure)
-	df_airquality["Humidity"] = pan.Series(sensor_humidity)
-	df_airquality["Airquality"] = pan.Series(sensor_airquality, dtype=object)
-	df_airquality["Time"] = pan.Series(sensor_time)
 	print(df_airquality)
 
 # from datetime import datetime
