@@ -105,4 +105,4 @@ except KeyboardInterrupt:
 
 engine = db.create_engine('mysql://'+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"])
 connection = engine.connect()
-print(connection)
+print(connection.sensors_data)
