@@ -72,18 +72,14 @@ counter_fivemin_db_storing = 0
 try:
     while True:
         if sensor.get_sensor_data():
-            sensor_temperature.append(sensor.data.temperature)
-            sensor_pressure.append(sensor.data.pressure)
-            sensor_humidity.append(sensor.data.humidity)
-            sensor_time.append(datetime.datetime.now())
-
             output = datetime.datetime.now().strftime('%Y-%m-%d,%H:%M:%S,')+'{0:.2f} C,{1:.2f} hPa,{2:.2f} %RH'.format(
                 sensor.data.temperature, sensor.data.pressure, sensor.data.humidity)
             if sensor.data.heat_stable:
                 print('{0},{1} Ohms'.format(
                     output,
                     sensor.data.gas_resistance))
-                sensor_airquality.append(sensor.data.gas_resistance)
+                if (counter_fivemin_db_storing >= 300) :
+                    sensor_airquality.append(sensor.data.gas_resistance)
             else:
                 print(output)
             time.sleep(1)
@@ -91,15 +87,20 @@ try:
             print(counter_fivemin_db_storing)
             counter_fivemin_db_storing += 1
 
-            if counter_fivemin_db_storing >= 300 :
+            if (counter_fivemin_db_storing >= 300) :
                 counter_fivemin_db_storing = 0
-                df_airquality["Temperature"] = pan.Series(sensor_temperature)
-                df_airquality["Pressure"] = pan.Series(sensor_pressure)
-                df_airquality["Humidity"] = pan.Series(sensor_humidity)
-                df_airquality["Airquality"] = pan.Series(sensor_airquality, dtype=object)
-                df_airquality["Time"] = pan.Series(sensor_time)
+                sensor_temperature.append(sensor.data.temperature)
+                sensor_pressure.append(sensor.data.pressure)
+                sensor_humidity.append(sensor.data.humidity)
+                sensor_time.append(datetime.datetime.now())
                 
+            
 except KeyboardInterrupt:
+    df_airquality["Temperature"] = pan.Series(sensor_temperature)
+    df_airquality["Pressure"] = pan.Series(sensor_pressure)
+    df_airquality["Humidity"] = pan.Series(sensor_humidity)
+    df_airquality["Airquality"] = pan.Series(sensor_airquality, dtype=object)
+    df_airquality["Time"] = pan.Series(sensor_time)
 	print(df_airquality)
 
 # from datetime import datetime
