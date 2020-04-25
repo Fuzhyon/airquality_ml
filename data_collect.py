@@ -78,12 +78,12 @@ try:
                 print('{0},{1} Ohms'.format(
                     output,
                     sensor.data.gas_resistance))
-                if (counter_fivemin_db_storing >= 299) :
+                if (counter_fivemin_db_storing == 299) :
                     sensor_airquality.append(sensor.data.gas_resistance)
             else:
                 print(output)
             time.sleep(1)
-        
+            print(sensor_airquality)
             print(counter_fivemin_db_storing)
             counter_fivemin_db_storing += 1
 
