@@ -100,7 +100,7 @@ try:
                 df_airquality["humidity"] = pan.Series(sensor_humidity)
                 df_airquality["airquality"] = pan.Series(sensor_airquality, dtype=object)
                 df_airquality["record_datetime"] = pan.Series(sensor_time)
-                df_airquality.to_sql("sensors_data",con=engine, if_exists='append')
+                df_airquality.to_sql("sensors_data",con=engine, if_exists='append',index=False)
 
             if (day_counter >= 86400):
                 engine = create_engine("mysql://"+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+':'+cfg.mysql["port"]+'/'+cfg.mysql['db'])
@@ -109,7 +109,7 @@ try:
                 df_airquality["humidity"] = pan.Series(sensor_humidity)
                 df_airquality["airquality"] = pan.Series(sensor_airquality, dtype=object)
                 df_airquality["record_datetime"] = pan.Series(sensor_time)
-                df_airquality.to_sql("sensors_data",con=engine, if_exists='append')
+                df_airquality.to_sql("sensors_data",con=engine, if_exists='append',index=False)
                 df_airquality = pan.DataFrame(columns=["temperature", "pressure", "humidity", "record_datetime", "airquality"])
                 day_counter = 0
             
