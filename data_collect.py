@@ -59,7 +59,7 @@ sensor.select_gas_heater_profile(0)
 # sensor.select_gas_heater_profile(1)
 
 print('\n\Récupération:')
-df_airquality = pan.DataFrame(columns=["Temperature", "Pressure", "Humidity", "Time", "Airquality"])
+df_airquality = pan.DataFrame(columns=["temperature", "pressure", "humidity", "record_datetime", "airquality"])
 sensor_temperature = []
 sensor_pressure = []
 sensor_humidity = []
@@ -99,7 +99,7 @@ try:
             if (day_counter >= 86400):
                 engine = create_engine("mysql://"+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+':'+cfg.mysql["port"]+'/'+cfg.mysql['db'])
                 df_airquality.to_sql("sensors_data",con=engine, if_exists='append',chunksize=1000)
-                df_airquality = pan.DataFrame(columns=["Temperature", "Pressure", "Humidity", "Time", "Airquality"])
+                df_airquality = pan.DataFrame(columns=["temperature", "pressure", "humidity", "record_datetime", "airquality"])
                 day_counter = 0
             
 except KeyboardInterrupt:
