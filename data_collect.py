@@ -6,8 +6,7 @@ import datetime
 import time
 import pandas as pan
 import databaseconfig as cfg
-import sqlalchemy as db
-
+from sqlalchemy import create_engine
 
 
 print("""read-all.py - Displays temperature, pressure, humidity, and gas.
@@ -68,6 +67,7 @@ sensor_airquality = []
 sensor_time = []
 
 counter_fivemin_db_storing = 0
+day_counter = 0
 
 try:
     while True:
@@ -83,17 +83,24 @@ try:
             else:
                 print(output)
             time.sleep(1)
-            print(sensor_airquality)
+
             print(counter_fivemin_db_storing)
             counter_fivemin_db_storing += 1
-
+            day_counter += 1
             if (counter_fivemin_db_storing >= 300) :
                 counter_fivemin_db_storing = 0
                 sensor_temperature.append(sensor.data.temperature)
                 sensor_pressure.append(sensor.data.pressure)
                 sensor_humidity.append(sensor.data.humidity)
-                sensor_time.append(datetime.datetime.now())
-                
+                sensor_time.append(datetime.datetime.timestamp(datetime.datetime.now()))
+                engine = create_engine("mysql+pymysql:/"/+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+':'+cfg.mysql["port"]+'/'+cfg.mysql['db'])
+                df_airquality.to_sql("sensors_data",con=engine, if_exists='append',chunksize=1000)
+
+            if (day_counter >= 86400):
+                engine = create_engine("mysql+pymysql:/"/+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+':'+cfg.mysql["port"]+'/'+cfg.mysql['db'])
+                df_airquality.to_sql("sensors_data",con=engine, if_exists='append',chunksize=1000)
+                df_airquality = pan.DataFrame(columns=["Temperature", "Pressure", "Humidity", "Time", "Airquality"])
+                day_counter = 0
             
 except KeyboardInterrupt:
     print(sensor_airquality)
