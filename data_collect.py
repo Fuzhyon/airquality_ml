@@ -118,14 +118,3 @@ except KeyboardInterrupt:
 
 # timestamp = datetime.timestamp(now)
 # print("timestamp =", timestamp)
-
-
-engine = db.create_engine('mysql://'+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+':'+cfg.mysql["port"]+'/'+cfg.mysql['db'])
-connection = engine.connect()
-metadata = db.MetaData()
-sensors_data = db.Table('sensors_data', metadata, autoload=True, autoload_with=engine)
-query = db.select([sensors_data])
-result = connection.execute(query)
-resultset = result.fetchall()
-print(resultset)
-connection.close()
