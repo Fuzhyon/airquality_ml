@@ -93,11 +93,11 @@ try:
                 sensor_pressure.append(sensor.data.pressure)
                 sensor_humidity.append(sensor.data.humidity)
                 sensor_time.append(time.mktime(datetime.datetime.now().timetuple()))
-                engine = create_engine("mysql+pymysql://"+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+':'+cfg.mysql["port"]+'/'+cfg.mysql['db'])
+                engine = create_engine("mysql://"+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+':'+cfg.mysql["port"]+'/'+cfg.mysql['db'])
                 df_airquality.to_sql("sensors_data",con=engine, if_exists='append',chunksize=1000)
 
             if (day_counter >= 86400):
-                engine = create_engine("mysql+pymysql://"+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+':'+cfg.mysql["port"]+'/'+cfg.mysql['db'])
+                engine = create_engine("mysql://"+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+':'+cfg.mysql["port"]+'/'+cfg.mysql['db'])
                 df_airquality.to_sql("sensors_data",con=engine, if_exists='append',chunksize=1000)
                 df_airquality = pan.DataFrame(columns=["Temperature", "Pressure", "Humidity", "Time", "Airquality"])
                 day_counter = 0
