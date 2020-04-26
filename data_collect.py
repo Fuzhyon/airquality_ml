@@ -9,6 +9,7 @@ import databaseconfig as cfg
 from sqlalchemy import create_engine
 
 
+
 print("""read-all.py - Displays temperature, pressure, humidity, and gas.
 
 Press Ctrl+C to exit!
@@ -94,10 +95,20 @@ try:
                 sensor_humidity.append(sensor.data.humidity)
                 sensor_time.append(time.mktime(datetime.datetime.now().timetuple()))
                 engine = create_engine("mysql://"+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+':'+cfg.mysql["port"]+'/'+cfg.mysql['db'])
+                df_airquality["temperature"] = pan.Series(sensor_temperature)
+                df_airquality["pressure"] = pan.Series(sensor_pressure)
+                df_airquality["humidity"] = pan.Series(sensor_humidity)
+                df_airquality["airquality"] = pan.Series(sensor_airquality, dtype=object)
+                df_airquality["record_datetime"] = pan.Series(sensor_time)
                 df_airquality.to_sql("sensors_data",con=engine, if_exists='append')
 
             if (day_counter >= 86400):
                 engine = create_engine("mysql://"+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+':'+cfg.mysql["port"]+'/'+cfg.mysql['db'])
+                df_airquality["temperature"] = pan.Series(sensor_temperature)
+                df_airquality["pressure"] = pan.Series(sensor_pressure)
+                df_airquality["humidity"] = pan.Series(sensor_humidity)
+                df_airquality["airquality"] = pan.Series(sensor_airquality, dtype=object)
+                df_airquality["record_datetime"] = pan.Series(sensor_time)
                 df_airquality.to_sql("sensors_data",con=engine, if_exists='append')
                 df_airquality = pan.DataFrame(columns=["temperature", "pressure", "humidity", "record_datetime", "airquality"])
                 day_counter = 0
