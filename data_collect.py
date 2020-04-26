@@ -104,6 +104,11 @@ try:
                 df_airquality["record_datetime"] = pan.Series(sensor_time, dtype=object)
                 df_airquality.to_sql("sensors_data",con=engine, if_exists='append',index=False)
                 df_airquality = pan.DataFrame(columns=["temperature", "pressure", "humidity", "record_datetime", "airquality"])
+                sensor_temperature = []
+                sensor_pressure = []
+                sensor_humidity = []
+                sensor_airquality = []
+                sensor_time = []
                 day_counter = 0
             
 except KeyboardInterrupt:
