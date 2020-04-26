@@ -104,11 +104,11 @@ try:
             
 except KeyboardInterrupt:
     print(sensor_airquality)
-    df_airquality["Temperature"] = pan.Series(sensor_temperature)
-    df_airquality["Pressure"] = pan.Series(sensor_pressure)
-    df_airquality["Humidity"] = pan.Series(sensor_humidity)
-    df_airquality["Airquality"] = pan.Series(sensor_airquality, dtype=object)
-    df_airquality["Time"] = pan.Series(sensor_time)
+    df_airquality["temperature"] = pan.Series(sensor_temperature)
+    df_airquality["pressure"] = pan.Series(sensor_pressure)
+    df_airquality["humidity"] = pan.Series(sensor_humidity)
+    df_airquality["airquality"] = pan.Series(sensor_airquality, dtype=object)
+    df_airquality["record_datetime"] = pan.Series(sensor_time)
     print(df_airquality)
 
 # from datetime import datetime
