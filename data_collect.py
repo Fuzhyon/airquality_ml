@@ -94,13 +94,6 @@ try:
                 sensor_pressure.append(sensor.data.pressure)
                 sensor_humidity.append(sensor.data.humidity)
                 sensor_time.append(datetime.datetime.now())
-                engine = create_engine("mysql://"+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+':'+cfg.mysql["port"]+'/'+cfg.mysql['db'])
-                df_airquality["temperature"] = pan.Series(sensor_temperature)
-                df_airquality["pressure"] = pan.Series(sensor_pressure)
-                df_airquality["humidity"] = pan.Series(sensor_humidity)
-                df_airquality["airquality"] = pan.Series(sensor_airquality, dtype=object)
-                df_airquality["record_datetime"] = pan.Series(sensor_time, dtype=object)
-                df_airquality.to_sql("sensors_data",con=engine, if_exists='append',index=False)
 
             if (day_counter >= 86400):
                 engine = create_engine("mysql://"+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+':'+cfg.mysql["port"]+'/'+cfg.mysql['db'])
@@ -121,11 +114,3 @@ except KeyboardInterrupt:
     df_airquality["airquality"] = pan.Series(sensor_airquality, dtype=object)
     df_airquality["record_datetime"] = pan.Series(sensor_time,dtype=object)
     print(df_airquality)
-
-# from datetime import datetime
-
-# # current date and time
-# now = datetime.now()
-
-# timestamp = datetime.timestamp(now)
-# print("timestamp =", timestamp)
