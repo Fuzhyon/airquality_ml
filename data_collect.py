@@ -99,7 +99,7 @@ try:
                 df_airquality["pressure"] = pan.Series(sensor_pressure)
                 df_airquality["humidity"] = pan.Series(sensor_humidity)
                 df_airquality["airquality"] = pan.Series(sensor_airquality, dtype=object)
-                df_airquality["record_datetime"] = pan.Series(sensor_time)
+                df_airquality["record_datetime"] = pan.Series(sensor_time, dtype=object)
                 df_airquality.to_sql("sensors_data",con=engine, if_exists='append',index=False)
 
             if (day_counter >= 86400):
