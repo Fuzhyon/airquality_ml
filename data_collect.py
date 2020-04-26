@@ -93,7 +93,7 @@ try:
                 sensor_temperature.append(sensor.data.temperature)
                 sensor_pressure.append(sensor.data.pressure)
                 sensor_humidity.append(sensor.data.humidity)
-                sensor_time.append(time.mktime(datetime.datetime.now().timetuple()))
+                sensor_time.append(datetime.datetime.now())
                 engine = create_engine("mysql://"+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+':'+cfg.mysql["port"]+'/'+cfg.mysql['db'])
                 df_airquality["temperature"] = pan.Series(sensor_temperature)
                 df_airquality["pressure"] = pan.Series(sensor_pressure)
