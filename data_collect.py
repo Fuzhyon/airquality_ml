@@ -92,7 +92,7 @@ try:
                 sensor_temperature.append(sensor.data.temperature)
                 sensor_pressure.append(sensor.data.pressure)
                 sensor_humidity.append(sensor.data.humidity)
-                sensor_time.append(datetime.timestamp(datetime.datetime.now()))
+                sensor_time.append(datetime.datetime.now().timestamp())
                 engine = create_engine("mysql+pymysql:/"/+cfg.mysql['user']+':'+cfg.mysql["password"]+'@'+cfg.mysql["host"]+':'+cfg.mysql["port"]+'/'+cfg.mysql['db'])
                 df_airquality.to_sql("sensors_data",con=engine, if_exists='append',chunksize=1000)
 
